@@ -36,8 +36,9 @@ const HomePages = () => {
 	const [totalSumResult, setTotalSumResult] = useState<number | string>("");
 	const [totalSumId, setTotalSumId] = useState<number | string>("");
 	const [itemSum, setItemSum] = useState<number | string>("");
-	const [itemSumName, setItemSumName] = useState<number | string>("");
-	
+	const [itemSumName, setItemSumName] = useState<number | string >("");
+	const [isOpenFalse, setIsOpenFalse] = useState<null | number>(null);
+
 	const [onClickResult, setOnClickResult] = useState<null | number>(null);
 	const [result, setResult] = useState(false);
 	useEffect(() => {
@@ -108,15 +109,33 @@ const HomePages = () => {
 										}
 										className={scss.divTableMap1}
 										key={item.id}>
-										<Input
-											onClick={() => {
-												// addItemIdInputResult(item.id);
-												setOnClickResult(item.id);
-												setItemSum(item.sum);
-												setItemSumName(item.sumId);
-											}}
-											type={item.type}
-										/>
+										{isOpenFalse === item.id ? (
+											<>
+												<Input
+													onClick={() => {
+														// addItemIdInputResult(item.id);
+														setOnClickResult(null);
+														setItemSum("");
+														setItemSumName("");
+														setIsOpenFalse(null);
+													}}
+													type={item.type}
+												/>
+											</>
+										) : (
+											<>
+												<Input
+													onClick={() => {
+														// addItemIdInputResult(item.id);
+														setOnClickResult(item.id);
+														setItemSum(item.sum);
+														setItemSumName(item.sumId);
+														setIsOpenFalse(item.id);
+													}}
+													type={item.type}
+												/>
+											</>
+										)}
 										<span>{item.sum}</span>
 										<p>{item.textName}</p>
 										<p>{item.text2}</p>
@@ -142,10 +161,7 @@ const HomePages = () => {
 								<p>{itemSumName} row selected</p>
 							</>
 						) : (
-							<>
-								<div onClick={() => setIsPageResult(false)}>button page 1</div>
-								<div onClick={() => setIsPageResult(true)}>button page 2</div>
-							</>
+							null
 						)}
 					</div>
 				</div>
