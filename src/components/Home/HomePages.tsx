@@ -33,14 +33,24 @@ const array1 = [
 ];
 const HomePages = () => {
 	const [isPageResult, setIsPageResult] = useState<boolean>(false);
-	const [totalSumResult, setTotalSumResult] = useState<string>("");
+	const [totalSumResult, setTotalSumResult] = useState<number | string>("");
+	const [totalSumId, setTotalSumId] = useState<number | string>("");
+  const [inputResultItemId, setInputResultItemId] = useState()
+	const [onClickResult, setOnClickResult] = useState();
+	const [result, setResult] = useState(false);
 	useEffect(() => {
-		let totalSum = "0";
+		let totalSum = 0;
+		let total = 0;
 		array1.forEach((el) => {
 			totalSum += +el.sum;
 			setTotalSumResult(totalSum);
 		});
-	}, [setTotalSumResult]);
+		array1.forEach((elItemId) => {
+			total += +elItemId.sumId;
+			setTotalSumId(total);
+		});
+	}, [setTotalSumResult, setTotalSumId]);
+
 	return (
 		<div className={scss.home}>
 			<div className="container">
@@ -70,7 +80,13 @@ const HomePages = () => {
 					) : (
 						<>
 							<div className={scss.divTable}>
-								<Input type="checkbox" />
+								<Input
+									type="checkbox"
+									onClick={() => {
+										setResult(!result);
+										console.log("result");
+									}}
+								/>
 								<p>ID</p>
 								<p>First name</p>
 								<p>Age</p>
@@ -78,7 +94,7 @@ const HomePages = () => {
 							</div>
 							<>
 								{array1.map((item) => (
-									<div className={scss.divTableMap1} key={item.id}>
+									<div style={result ? {backgroundColor: 'blue'} : {backgroundColor: 'rgb(27, 24, 24)'}} className={scss.divTableMap1} key={item.id}>
 										<Input type={item.type} />
 										<span>{item.sum}</span>
 										<p>{item.textName}</p>
@@ -90,7 +106,13 @@ const HomePages = () => {
 						</>
 					)}
 					<div>
-						<p>{totalSumResult} row selected</p>
+						{/* <p>{totalSumResult} row selected</p> */}
+						{result ? (
+							<>
+								<p>{totalSumResult} row selected</p>
+								<p>{totalSumId} row selected</p>
+							</>
+						) : null}
 						<div onClick={() => setIsPageResult(false)}>button page 1</div>
 						<div onClick={() => setIsPageResult(true)}>button page 2</div>
 					</div>
